@@ -1,12 +1,14 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/login/login",
+    "pages/logs/logs",
+    "pages/register/register",
+    "pages/index/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "念念教育中心",
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json"

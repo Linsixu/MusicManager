@@ -9,13 +9,13 @@ App({
     var Bmob = require('dist/Bmob-1.7.1.min.js');
     Bmob.initialize("6190525c2d38ba9be4369cbd1ad8c9da", "f5ba935995568ab48d07973c8b175299");
 
-    Bmob.User.auth().then(res => {
-      console.log(res)
-      console.log('一键登陆成功')
+    // Bmob.User.auth().then(res => {
+    //   console.log(res)
+    //   console.log('一键登陆成功')
 
-    }).catch(err => {
-      console.log(err)
-    });
+    // }).catch(err => {
+    //   console.log(err)
+    // });
 
     // 登录
     wx.login({
@@ -46,5 +46,20 @@ App({
   },
   globalData: {
     userInfo: null
-  }
+  },
+
+  //自定义Toast
+  showToast: function (text, o, count) {
+    var _this = o;
+    count = parseInt(count) ? parseInt(count) : 3000;
+    _this.setData({
+      toastText: text,
+      isShowToast: true,
+    });
+    setTimeout(function () {
+      _this.setData({
+        isShowToast: false
+      });
+    }, count);
+  },
 })
