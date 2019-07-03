@@ -1,7 +1,7 @@
 <view class='container'>
   <include src="../../footer.wxml"/>
   <view class='header'>
-    <text>注册页面</text>
+    <text>家长注册页面</text>
   </view>
   <form bindsubmit="register">
     <view class='section'>

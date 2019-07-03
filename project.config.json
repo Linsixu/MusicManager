@@ -14,7 +14,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.0.4",
 	"appid": "wx37badc9d8bec00f3",
-	"projectname": "music",
+	"projectname": "MusicManager",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
