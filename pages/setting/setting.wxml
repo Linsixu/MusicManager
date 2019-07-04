@@ -1,8 +1,15 @@
 <view class="list-wrapper">
+    <view class='user'>
+      <image class='user-avatar' src="{{avatar}}"></image>
+    </view>
+    <view class='usermsg'>
+        <text class='usermsg-text' bindtap='jumpToLogin'>用户名(未登陆)</text>
+        <text class='usermsg-childname' bindtap='jumpToLogin'>我家宝宝</text>
+    </view>
     <block wx:for="{{menuitems}}" wx:key="item">
       <navigator url="{{item.url}}" class="list-item" hover-class="list-item_active">
         <view class='item'>
-          <image class='item-image' src='../../images/icon.png'></image>
+          <image class='item-image' src="{{item.icon}}"></image>
           <text class="item-text">{{item.text}}</text>
           <text class='item-array'>></text>
         </view>

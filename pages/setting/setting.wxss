@@ -27,18 +27,56 @@
 }
 .item-text {
   position: fixed;
-  left: 100rpx;
-  font-size: 38rpx;
+  left: 120rpx;
+  color: #707070;
+  font-size: 28rpx;
 }
 .item-array {
   position: fixed;
   right: 50rpx;
-  font-size: 38rpx;
+  font-size: 28rpx;
 }
 
 .item-image {
   position: fixed;
   left: 50rpx;
-  width: 40rpx;
-  height: 40rpx;
+  width: 50rpx;
+  height: 50rpx;
+}
+
+/***用户登陆头像***/
+.user {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  height: 150rpx;
+}
+.user-avatar{
+  position: fixed;
+  left: 40rpx;
+  width: 150rpx;
+  height: 150rpx;
+}
+.usermsg {
+  display: flex;
+  position: fixed;
+  top: 20rpx;
+  flex-direction: column;
+  left: 190rpx;
+  height: 150rpx;
+}
+
+.usermsg-text{
+  position: fixed;
+  left: 200rpx;
+  font-size: 28rpx;
+  color: #707070;
+}
+
+.usermsg-childname{
+  position: fixed;
+  top: 80rpx;
+  left: 200rpx;
+  font-size: 28rpx;
+  color: #707070;
 }

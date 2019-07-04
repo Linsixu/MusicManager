@@ -48,6 +48,7 @@ Page({
       password: psd,
       childname: childName,
       phone: name,
+      isteacher: false,
     }
     if (psd != againtpsd){
       app.showToast("两次输入密码不同",that,1000);
@@ -56,9 +57,9 @@ Page({
     Bmob.User.register(params).then(res => {
       app.showToast("注册成功", that, 1000);
       setTimeout(function () {
-        wx.navigateBack({
-          delta: 1
-        });
+        wx.switchTab({
+          url: '../../pages/setting/setting'
+        })
       }, 1000);
     }).catch(err => {
       console.log(err)

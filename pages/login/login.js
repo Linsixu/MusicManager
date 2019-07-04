@@ -26,17 +26,8 @@ Page({
       console.log(res)
       app.showToast("成功登陆", that, 1000);
       setTimeout(function () {
-        wx.navigateTo({
-          url: '/pages/index/index',
-          events: {
-            acceptDataFromOpenedPage: function (data) {
-              console.log(data)
-            }
-          },
-          success: function (res) {
-            console.log(res.data);
-            // res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
-          }
+        wx.switchTab({
+          url: '../../pages/setting/setting'
         })
       }, 1000);
     }).catch(err => {

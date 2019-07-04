@@ -4,7 +4,8 @@
     "pages/login/login",
     "pages/logs/logs",
     "pages/register/register",
-    "pages/setting/setting"
+    "pages/setting/setting",
+    "pages/teacher_register/teacher_register"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,8 +32,8 @@
       {
         "pagePath": "pages/setting/setting",
         "text": "个人设置",
-        "iconPath": "images/teacher_normal.png",
-        "selectedIconPath": "images/teacher_press.png"
+        "iconPath": "images/my_normal.png",
+        "selectedIconPath": "images/my_press.png"
       }
     ]
   },
