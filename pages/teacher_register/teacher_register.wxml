@@ -1,5 +1,5 @@
 <view class='container'>
-  <include src="../../footer.wxml"/>
+  <include src="../../toast_foot.wxml"/>
   <view class='header'>
     <text>教师注册页面</text>
   </view>
@@ -18,7 +18,7 @@
     </view>
     <view class='section'>
       <text>教师名称:</text>
-      <input type='number' placeholder='请输入孩子名称' name="childname" value='123456'/>
+      <input type='number' placeholder='请输入教师名称' name="teahcer_name" value='123456'/>
     </view>
     <view class='button'>
       <button type='primary' form-type='submit'>注册</button>

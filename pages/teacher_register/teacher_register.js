@@ -17,7 +17,7 @@ Page({
     var name = e.detail.value.username;
     var psd = e.detail.value.password;
     var againtpsd = e.detail.value.password1;
-    var childName = e.detail.value.childname;
+    var teahcer_name = e.detail.value.teahcer_name;
 
     var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
     if (!myreg.test(name)) {
@@ -46,7 +46,7 @@ Page({
     let params = {
       username: name,
       password: psd,
-      childname: childName,
+      teacher_name: teahcer_name,
       phone: name,
       isteacher: true,
     }

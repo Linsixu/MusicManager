@@ -1,5 +1,5 @@
 <view class='container'>
-<include src="../../footer.wxml"/>
+<include src="../../toast_foot.wxml"/>
   <view class='header'>
     <view>
         <image style="width: 200px; height: 200px;" src="../../images/icon.png"/>

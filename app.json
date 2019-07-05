@@ -5,7 +5,8 @@
     "pages/logs/logs",
     "pages/register/register",
     "pages/setting/setting",
-    "pages/teacher_register/teacher_register"
+    "pages/teacher_register/teacher_register",
+    "pages/teacher_publish/teacher_publish"
   ],
   "window": {
     "backgroundTextStyle": "light",

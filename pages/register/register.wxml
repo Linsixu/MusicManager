@@ -1,5 +1,5 @@
 <view class='container'>
-  <include src="../../footer.wxml"/>
+  <include src="../../toast_foot.wxml"/>
   <view class='header'>
     <text>家长注册页面</text>
   </view>
