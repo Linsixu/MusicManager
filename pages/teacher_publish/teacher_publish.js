@@ -79,6 +79,7 @@ Page({
   },
   onLoad: function () {
     this.dialog = this.selectComponent(".mydialog");
+    getList(this);
   },
   noneWindows: function () {
     that.setData({
@@ -87,9 +88,25 @@ Page({
     })
   },
   onShow: function () {
-    getList(this);
-
-
+    var currentUser = Bmob.User.current();
+    console.log("teacher=" + currentUser.isteacher);
+    if(currentUser == null){
+      app.showToast("请登陆", that, 1000);
+      setTimeout(function () {
+        wx.switchTab({
+          url: '../../pages/setting/setting'
+        })
+      }, 1000);
+    } else if (currentUser.isteacher == false){
+      app.showToast("不是老师无法使用", that, 1000);
+      setTimeout(function () {
+        wx.switchTab({
+          url: '../../pages/setting/setting'
+        })
+      }, 1000);
+    }else{
+      getList(this);
+    }
     // wx.getSystemInfo({
     //   success: (res) => {
     //     that.setData({
@@ -214,45 +231,13 @@ Page({
 function getList(t, k) {
   that = t;
   const query = Bmob.Query('TeacherClass');
-  console.log(query);
+  var list = [];
   query.find().then(res => {
-    console.log(res[0]);
-    this.setData({
+    that.setData({
       diaryList: res
+    },function() {
     })
   });
-  console.log("data=" + diaryList)
-  // var Diary = Bmob.Object.extend("TeacherClass");
-  // var query = new Bmob.Query(Diary);
-  // var query1 = new Bmob.Query(Diary);
-
-  //会员模糊查询
-  // if (k) {
-  //   query.equalTo("title", { "$regex": "" + k + ".*" });
-  //   query1.equalTo("content", { "$regex": "" + k + ".*" });
-  // }
-
-  //普通会员匹配查询
-  // query.equalTo("title", k);
-
-  // query.descending('createdAt');
-  // query.include("own")
-  // 查询所有数据
-  // query.limit(that.data.limit);
-
-  // var mainQuery = Bmob.Query.or(query, query1);
-  // mainQuery.find({
-  //   success: function (results) {
-  //     // 循环处理查询到的数据
-  //     console.log(results);
-  //     that.setData({
-  //       diaryList: results
-  //     })
-  //   },
-  //   error: function (error) {
-  //     console.log("查询失败: " + error.code + " " + error.message);
-  //   }
-  // });
 }
 
 function modify(t, e) {
