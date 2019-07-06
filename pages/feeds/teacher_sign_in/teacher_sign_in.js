@@ -44,6 +44,12 @@ Page({
 
   onLoad: function (options) {
     that = this;
+    var currentUser = Bmob.User.current();
+    if(currentUser == null){
+      wx.navigateTo({
+        url: '../../teacher_register/teacher_register'
+      })
+    }
     this.dialog = this.selectComponent(".mydialog");
     that.objectId = options.objectId;
     that.belong = options.belong;

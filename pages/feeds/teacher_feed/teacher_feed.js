@@ -89,32 +89,11 @@ Page({
   },
   onShow: function () {
     var currentUser = Bmob.User.current();
-    console.log("teacher=" + currentUser.isteacher);
     if (currentUser == null) {
       app.showToast("请登陆", that, 1000);
-      setTimeout(function () {
-        wx.switchTab({
-          url: '../../pages/setting/setting'
-        })
-      }, 1000);
-    } else if (currentUser.isteacher == false) {
-      app.showToast("不是老师无法使用", that, 1000);
-      setTimeout(function () {
-        wx.switchTab({
-          url: '../../pages/setting/setting'
-        })
-      }, 1000);
     } else {
       getList(this);
     }
-    // wx.getSystemInfo({
-    //   success: (res) => {
-    //     that.setData({
-    //       windowHeight: res.windowHeight,
-    //       windowWidth: res.windowWidth
-    //     })
-    //   }
-    // })
   },
   pullUpLoad: function (e) {
     var limit = that.data.limit + 2
