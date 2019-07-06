@@ -127,9 +127,9 @@ Page({
         })
         app.showToast("发布成功", that, 1000);
         setTimeout(function () {
-          wx.switchTab({
-            url: '../teacher_publish'
-          })
+          wx.navigateBack({
+            delta: 1,
+          });
         }, 800);
       }).catch(err => {
         console.log(err)

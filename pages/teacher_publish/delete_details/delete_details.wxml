@@ -1,6 +1,6 @@
 <import src="../../../style/footer.wxml" />
 <view class="weui-cells__title">修改信息</view>
-      <form bindsubmit="addClassMsg" report-submit="true">
+      <form bindsubmit="updateMsg" report-submit="true">
         <include src="../../../toast_foot.wxml"/>
           <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
@@ -8,7 +8,7 @@
                     <view class="weui-label">课堂名称</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" name="class_name" placeholder="请输入课堂名称" value='{{class_name}}'/>
+                    <input class="weui-input" name="class_name" placeholder="请输入课堂名称" value='{{className}}'/>
                 </view>
             </view>
             <view class="weui-cell weui-cell_input weui-cell_vcode">
@@ -17,6 +17,19 @@
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input" name="phone_number" placeholder="请输入手机号码" value='{{phone}}'/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input weui-cell_vcode" style='height=40rpx;'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label">签到情况</view>
+                </view>
+                <view class="weui-cell__bd" style="margin:20rpx;">
+                  <radio-group class="radio-group" bindchange="radioChange">
+                      <label class="radio">
+                        <radio value="true" checked="{{signIn}}"/>已经签到
+                        <radio value="false" checked="{{!signIn}}"/>未签到
+                      </label>
+                  </radio-group>
                 </view>
             </view>
             <view class="weui-cell weui-cell_input" bindtap='pickerShow'>
@@ -39,10 +52,10 @@
           <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
   <button class="weui-btn" type="primary" formType="submit">更新</button>
 </view>
- <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
+ <view class="page__bd page__bd_spacing" style='margin:20rpx;' bindtap='delete'>
   <button class="weui-btn" type="warn">删除</button>
 </view>
-      </form>
+</form>
 
 <timePicker pickerShow="{{isPickerShow}}" id="picker" wx:if="{{isPickerRender}}" bind:hidePicker="pickerHide" bind:setPickerTime="setPickerTime"
   config="{{pickerConfig}}"></timePicker>

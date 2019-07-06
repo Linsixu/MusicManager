@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
-var Bmob = require('../../dist/Bmob-1.7.1.min.js');
-var common = require('../../utils/common.js');
+var Bmob = require('../../../dist/Bmob-1.7.1.min.js');
+var common = require('../../../utils/common.js');
 var app = getApp();
 var that;
 Page({
@@ -30,22 +30,9 @@ Page({
     }
   },
 
-  test: function(){
+  test: function () {
     app.showToast("请登陆", that, 1000);
   },
-
-  gotoLogin: function(){
-    var currentUser = Bmob.User.current();
-    if(currentUser == null){
-      app.showToast("请先登陆", that, 1000);
-      setTimeout(function () {
-      wx.navigateBack({
-        delta: 1,
-      });
-    }, 1000);
-  }
-},
-
   /***时间选择器**/
   pickerShow: function () {
     console.log("123")
@@ -101,25 +88,33 @@ Page({
     })
   },
   onShow: function () {
-    that = this;
     var currentUser = Bmob.User.current();
-    if(currentUser == null){
+    console.log("teacher=" + currentUser.isteacher);
+    if (currentUser == null) {
       app.showToast("请登陆", that, 1000);
       setTimeout(function () {
         wx.switchTab({
           url: '../../pages/setting/setting'
         })
       }, 1000);
-    } else if (currentUser.isteacher == false){
+    } else if (currentUser.isteacher == false) {
       app.showToast("不是老师无法使用", that, 1000);
       setTimeout(function () {
         wx.switchTab({
           url: '../../pages/setting/setting'
         })
       }, 1000);
-    }else{
+    } else {
       getList(this);
     }
+    // wx.getSystemInfo({
+    //   success: (res) => {
+    //     that.setData({
+    //       windowHeight: res.windowHeight,
+    //       windowWidth: res.windowWidth
+    //     })
+    //   }
+    // })
   },
   pullUpLoad: function (e) {
     var limit = that.data.limit + 2
@@ -142,7 +137,7 @@ Page({
 
   },
   toModifyDiary: function (event) {
-  
+
   },
   modifyDiary: function (e) {
     var t = this;
@@ -185,22 +180,14 @@ Page({
 * 获取数据
 */
 function getList(t, k) {
-  var currentUser = Bmob.User.current();
   that = t;
-  if(currentUser == null){
-    that.gotoLogin();
-  }else{
-    const query = Bmob.Query('TeacherClass');
-    //创建关联的pointer
-    const pointer = Bmob.Pointer('_User')
-    const poiID = pointer.set(currentUser.objectId);
-
-    query.equalTo("belong", "==", poiID);
-    query.find().then(res => {
-      that.setData({
-        diaryList: res
-      }, function () {
-      })
-    });
-  }
+  const query = Bmob.Query('TeacherClass');
+  query.equalTo("sign_in", "==", false);
+  query.find().then(res => {
+    console.log(res)
+    that.setData({
+      diaryList: res
+    }, function () {
+    })
+  });
 }

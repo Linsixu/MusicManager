@@ -15,7 +15,7 @@ Page({
       { text: '家长注册账号', url: '../register/register', icon: '../../images/setting_parent.png', tips: '' },
       { text: '教师发布流程', url: '../teacher_publish/teacher_publish', icon: '../../images/setting_teacher_publish.png', tips: '' },
       { text: '家长取消预约', url: '../register/register', icon: '../../images/setting_parent_manager.png', tips: '' },
-      { text: '学生课程签到', url: '../register/register', icon: '../../images/student_check_in.png', tips: '' }
+      { text: '学生课程签到', url: '../student/student_sign_in/student_sign_in', icon: '../../images/student_check_in.png', tips: '' }
     ]
   },
 

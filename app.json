@@ -8,7 +8,10 @@
     "pages/teacher_register/teacher_register",
     "pages/teacher_publish/teacher_publish",
     "pages/teacher_publish/publish_details/publish_details",
-    "pages/teacher_publish/delete_details/delete_details"
+    "pages/teacher_publish/delete_details/delete_details",
+    "pages/student/student_sign_in/student_sign_in",
+    "pages/feeds/teacher_feed/teacher_feed",
+    "pages/feeds/teacher_sign_in/teacher_sign_in"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -27,7 +30,7 @@
         "selectedIconPath": "images/student_press.png"
       },
       {
-        "pagePath": "pages/logs/logs",
+        "pagePath": "pages/feeds/teacher_feed/teacher_feed",
         "text": "教师课程",
         "iconPath": "images/teacher_normal.png",
         "selectedIconPath": "images/teacher_press.png"

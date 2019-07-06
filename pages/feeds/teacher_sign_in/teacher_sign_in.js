@@ -16,8 +16,7 @@ Page({
     teacher_name: '',
     phone: '',
     objectId: 0,
-    belong:[],
-    sign_in:false,
+    belong: [],
     modifyDiarys: false,
 
     //时间器
@@ -35,50 +34,9 @@ Page({
       limitEndTime: "2055-05-06 12:32:44"
     }
   },
+ 
 
-  test: function () {
-    app.showToast("请登陆", that, 1000);
-  },
-  /***时间选择器**/
-  pickerShow: function () {
-    console.log("123")
-    this.setData({
-      isPickerShow: true,
-      isPickerRender: true,
-      chartHide: true
-    });
-  },
-  pickerHide: function () {
-    this.setData({
-      isPickerShow: false,
-      chartHide: false
-    });
-  },
 
-  bindPickerChange: function (e) {
-    console.log("3333")
-    console.log("picker发送选择改变，携带值为", e.detail.value);
-    console.log(this.data.sensorList);
-
-    this.getData(this.data.sensorList[e.detail.value].id);
-    // let startDate = util.formatTime(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 7));
-    // let endDate = util.formatTime(new Date());
-    this.setData({
-      index: e.detail.value,
-      sensorId: this.data.sensorList[e.detail.value].id
-      // startDate,
-      // endDate
-    });
-  },
-  setPickerTime: function (val) {
-    console.log("setPickerTime")
-    console.log(val);
-    let data = val.detail;
-    this.setData({
-      startTime: data.startTime,
-      endTime: data.endTime
-    });
-  },
   /**时间选择器***/
 
   onReady: function (e) {
@@ -86,57 +44,34 @@ Page({
 
   onLoad: function (options) {
     that = this;
-    if(options.objectId != null){
-      console.log("----------object----------", options);
-      this.dialog = this.selectComponent(".mydialog");
-      that.objectId = options.objectId;
-      that.belong = options.belong;
-      that.sign_in = options.sign_in;
-      console.log("----------sign_in----------", that.sign_in);
-      this.setData({
-        startTime: options.start_time,
-        endTime: options.end_time,
-        className: options.class_name,
-        phone: options.phone,
-        signIn: options.sign_in,
-      });
-    }else{
-      app.showToast("请先登陆", that, 1000);
-      setTimeout(function () {
-        wx.navigateBack({
-          delta: 1,
-        });
-      }, 1000);
-    }
+    this.dialog = this.selectComponent(".mydialog");
+    that.objectId = options.objectId;
+    that.belong = options.belong;
+    that.teacher_name = options.teacher_name;
+    that.startTime = options.start_time;
+    that.endTime = options.end_time;
+    that.className = options.class_name;
+    console.log("----------objectId----------", that.teacher_name);
+    this.setData({
+      startTime: options.start_time,
+      endTime: options.end_time,
+      className: options.class_name,
+      phone: options.phone,
+    });
   },
 
-  delete: function () {
+  showRemind: function (event) {
     that = this;
     var currentUser = Bmob.User.current();
-    if (currentUser.objectId != that.belong) {
-      app.showToast("不能修改别的老师信息", that, 1000);
-      return
-    }
     wx.showModal({
-      title: '删除提示',
-      content: '是否删除该信息',
+      title: '预约提示',
+      content: '是否预约',
       confirmText: "是",
       cancelText: "否",
       success: function (res) {
         console.log(res);
         if (res.confirm) {
-          console.log('用户点击主操作');
-          const query = Bmob.Query('TeacherClass');
-          query.destroy(that.objectId).then(res => {
-            app.showToast("删除成功", that, 1000);
-            setTimeout(function () {
-              wx.navigateBack({
-                delta: 1,
-              });
-            }, 1000);
-          }).catch(err => {
-            console.log(err)
-          })
+          that.signInMsg(this);
         } else {
           console.log('用户点击辅助操作')
         }
@@ -144,40 +79,58 @@ Page({
     });
   },
 
-  radioChange: function (e) {
-    that = this;
-    console.log('radio发生change事件，携带value值为：', e.detail.value);
-    that.sign_in = e.detail.value;
-  },
-
-  updateMsg: function (event){
+  signInMsg: function (event) {
     that = this;
     var currentUser = Bmob.User.current();
-    if (currentUser.objectId != that.belong) {
-      app.showToast("不能修改别的老师信息", that, 1000);
-      return
-    }
-    var className = event.detail.value.class_name;
-    var start_time = event.detail.value.start_time;
-    var end_time = event.detail.value.end_time;
-    var phone = event.detail.value.phone_number;
-    var finally_sign_in = that.sign_in;
 
     const query = Bmob.Query('TeacherClass');
     query.get(that.objectId).then(res => {
       console.log(res)
-      res.set('class_name', className);
-      res.set('phone', phone);
-      res.set('start_time', start_time);
-      res.set('end_time', end_time);
-      res.set('sign_in', finally_sign_in);
-      res.save();
-      app.showToast("更新成功", that, 1000);
-      setTimeout(function () {
-        wx.navigateBack({
-          delta: 1,
-        });
-      }, 1000);
+      if(res.sign_in == true){
+        app.showToast("已被预约", that, 1000);
+        setTimeout(function () {
+          wx.navigateBack({
+            delta: 1,
+          });
+        }, 1000);
+      }else{
+        //更新数据
+        res.set('sign_in',true);
+        //添加课程与学生关系
+        const pointer = Bmob.Pointer('_User');
+        const poiID = pointer.set(currentUser.objectId);
+        res.set('belong_student', poiID)
+        
+        //插入到学生签到数据库中
+        const pointer1 = Bmob.Pointer('TeacherClass');
+        const poiMsg = pointer1.set(that.objectId);
+        const query1 = Bmob.Query('StudentSignIn');
+        console.log("teacher_name", that.endTime)
+        query1.set("teacher_name", that.teacher_name);
+        query1.set("start_time", that.startTime);
+        query1.set("end_time", that.endTime);
+        query1.set("class_name", that.className);
+        query1.set("belong", poiMsg);
+        query1.save().then(res1 => {
+          console.log(res1)
+          res.save()
+          app.showToast("已成功预约", that, 1000);
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1,
+            });
+          }, 1000);
+        }).catch(err1 => {
+          console.log(err1)
+          app.showToast("预约失败", that, 1000);
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1,
+            });
+          }, 1000);
+        })
+        
+      }
     }).catch(err => {
       console.log(err)
     })
@@ -191,7 +144,7 @@ Page({
   },
   onShow: function () {
     var currentUser = Bmob.User.current();
-    console.log("-----currentUser-------", currentUser);
+    console.log("teacher=" + currentUser.isteacher);
     if (currentUser == null) {
       app.showToast("请登陆", that, 1000);
       setTimeout(function () {

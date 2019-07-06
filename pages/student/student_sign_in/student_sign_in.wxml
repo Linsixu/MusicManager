@@ -1,23 +1,19 @@
-<import src="../../style/footer.wxml" />
-<image class="toWrite" bindtap="toAddDiary" src="../../images/teacher_publish_icon.png"></image>
+<import src="../../../style/footer.wxml" />
+<image class="toWrite" bindtap="toAddDiary" src="../../../images/teacher_publish_icon.png"></image>
 <view class="page">
-  <include src="../../toast_foot.wxml"/>
+  <include src="../../../toast_foot.wxml"/>
   <scroll-view lower-threshold="800" bindscrolltolower="pullUpLoad" upper-threshold="0" scroll-y="true">
     <view class="page__bd">
       <view class="weui-panel">
         <view class="weui-panel__hd">亲爱的，你的课程</view>
         <view class="weui-panel__bd">
 <block wx:if="{{diaryList.length>0}}">
-          <navigator class="weui-media-box weui-media-box_text" wx:for="{{diaryList}}" url="../teacher_publish/delete_details/delete_details?objectId={{item.objectId}}&phone={{item.phone}}&start_time={{item.start_time}}&end_time={{item.end_time}}&class_name={{item.class_name}}&teacher_name={{item.teacher_name}}&belong={{item.belong.objectId}}&sign_in={{item.sign_in}}">
+          <navigator class="weui-media-box weui-media-box_text" wx:for="{{diaryList}}" url="../teacher_publish/delete_details/delete_details?objectId={{item.objectId}}&phone={{item.phone}}&start_time={{item.start_time}}&end_time={{item.end_time}}&class_name={{item.class_name}}&teacher_name={{item.teacher_name}}&belong={{item.belong.objectId}}">
           <view class='page_item'>
             <view class="weui-media-box__title">教师昵称：{{item.teacher_name}}</view>
             <view class="weui-media-box__desc">
               课堂名称：{{item.class_name}}</view>
             <view class="weui-media-box__phone">手机号码：{{item.phone}}</view>
-            <view class="weui-media-box__sign_in">
-              <text wx:if="{{item.sign_in == true}}">签到情况：已经签到</text>
-              <text wx:else>签到情况：未签到</text>
-            </view>
             <view class="weui-media-box__info">
               <view class="weui-media-box__info__meta weui-media-time">开始时间：{{item.start_time}}</view>
               <view class="weui-media-box__info__meta weui-media-time">结束时间：{{item.end_time}}</view>

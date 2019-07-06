@@ -119,11 +119,6 @@ form .weui-dialog__bd:first-child {
   color: #686565e8;
 }
 
-.weui-media-box__sign_in{
-  font-size: 14px;
-  color: #d81e06;
-}
-
 .searchbar-result{
   border:none;
     margin-top: 0;
