@@ -26,8 +26,8 @@
                 <view class="weui-cell__bd" style="margin:20rpx;">
                   <radio-group class="radio-group" bindchange="radioChange">
                       <label class="radio">
-                        <radio value="true" checked="{{signIn}}"/>已经签到
-                        <radio value="false" checked="{{!signIn}}"/>未签到
+                        <radio value="{{true}}" checked="{{signIn}}"/>已经签到
+                        <radio value="{{false}}" checked="{{!signIn}}"/>未签到
                       </label>
                   </radio-group>
                 </view>

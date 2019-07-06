@@ -17,7 +17,7 @@ Page({
     phone: '',
     objectId: 0,
     belong:[],
-    sign_in:false,
+    signIn:false,
     modifyDiarys: false,
 
     //时间器
@@ -91,14 +91,18 @@ Page({
       this.dialog = this.selectComponent(".mydialog");
       that.objectId = options.objectId;
       that.belong = options.belong;
-      that.sign_in = options.sign_in;
-      console.log("----------sign_in----------", that.sign_in);
+      if(options.sign_in == "true"){
+        that.signIn = true;
+      }else{
+        that.signIn = false;
+      }
+      console.log("----------sign_in----------", that.signIn);
       this.setData({
         startTime: options.start_time,
         endTime: options.end_time,
         className: options.class_name,
         phone: options.phone,
-        signIn: options.sign_in,
+        signIn: that.signIn,
       });
     }else{
       app.showToast("请先登陆", that, 1000);
@@ -146,8 +150,11 @@ Page({
 
   radioChange: function (e) {
     that = this;
-    console.log('radio发生change事件，携带value值为：', e.detail.value);
-    that.sign_in = e.detail.value;
+    if (e.detail.value == "true"){
+      that.signIn = true;
+    }else{
+      that.signIn = false;
+    }
   },
 
   updateMsg: function (event){
@@ -161,8 +168,8 @@ Page({
     var start_time = event.detail.value.start_time;
     var end_time = event.detail.value.end_time;
     var phone = event.detail.value.phone_number;
-    var finally_sign_in = that.sign_in;
-
+    var finally_sign_in = that.signIn;
+    console.log('radio发生change事件，携带value值为：', typeof (finally_sign_in));
     const query = Bmob.Query('TeacherClass');
     query.get(that.objectId).then(res => {
       console.log(res)
