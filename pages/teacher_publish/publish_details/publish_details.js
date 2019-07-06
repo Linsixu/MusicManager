@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
-var Bmob = require('../../dist/Bmob-1.7.1.min.js');
-var common = require('../../utils/common.js');
+var Bmob = require('../../../dist/Bmob-1.7.1.min.js');
+var common = require('../../../utils/common.js');
 var app = getApp();
 var that;
 Page({
@@ -11,7 +11,6 @@ Page({
     windowHeight: 0,
     windowWidth: 0,
     limit: 10,
-    diaryList: [],
     modifyDiarys: false,
 
     //时间器
@@ -29,10 +28,6 @@ Page({
       limitEndTime: "2055-05-06 12:32:44"
     }
   },
-
-  test: function(){
-    app.showToast("请登陆", that, 1000);
-  },
   /***时间选择器**/
   pickerShow: function () {
     console.log("123")
@@ -43,6 +38,7 @@ Page({
     });
   },
   pickerHide: function () {
+    console.log("333")
     this.setData({
       isPickerShow: false,
       chartHide: false
@@ -79,54 +75,66 @@ Page({
   },
   onLoad: function () {
     this.dialog = this.selectComponent(".mydialog");
-    getList(this);
   },
-  noneWindows: function () {
-    that.setData({
-      writeDiary: "",
-      modifyDiarys: ""
-    })
-  },
-  onShow: function () {
-    var currentUser = Bmob.User.current();
-    console.log("teacher=" + currentUser.isteacher);
-    if(currentUser == null){
-      app.showToast("请登陆", that, 1000);
-      setTimeout(function () {
-        wx.switchTab({
-          url: '../../pages/setting/setting'
-        })
-      }, 1000);
-    } else if (currentUser.isteacher == false){
-      app.showToast("不是老师无法使用", that, 1000);
-      setTimeout(function () {
-        wx.switchTab({
-          url: '../../pages/setting/setting'
-        })
-      }, 1000);
-    }else{
-      getList(this);
+  addClassMsg: function (event) {
+    that = this;
+    console.log("event="+event.value);
+    var className = event.detail.value.class_name;
+    var start_time = event.detail.value.start_time;
+    var end_time = event.detail.value.end_time;
+    var phone = event.detail.value.phone_number;
+    console.log("event", event)
+    console.log("start_time=" + start_time)
+    console.log("end_time=" + end_time)
+    if (className == null || className == '') {
+      app.showToast("课堂名字不能为空", that, 1000);
     }
-    // wx.getSystemInfo({
-    //   success: (res) => {
-    //     that.setData({
-    //       windowHeight: res.windowHeight,
-    //       windowWidth: res.windowWidth
-    //     })
-    //   }
-    // })
-  },
-  pullUpLoad: function (e) {
-    var limit = that.data.limit + 2
-    this.setData({
-      limit: limit
-    })
-    this.onShow()
-  },
-  toAddDiary: function () {
-    wx.navigateTo({
-      url: 'publish_details/publish_details'
-    })
+    else if (phone == null || phone == '') {
+      app.showToast("手机号码不能为空", that, 1000);
+    }
+    else if (start_time == '' || start_time == null || end_time == '' || end_time == null) {
+      app.showToast("开始与结束时间不能为空", that, 1000);
+    } 
+    else {
+      that.setData({
+        loading: true
+      })
+      var currentUser = Bmob.User.current();
+      console.log("登陆用户信息" + currentUser)
+      if (currentUser == null) {
+        app.showToast("请登陆", that, 1000);
+        return
+      }
+      var teahername = currentUser.self_name;
+      console.log(teahername)
+      const query = Bmob.Query('TeacherClass');
+      query.set("start_time", start_time)
+      query.set("teacher_name", teahername)
+      query.set("end_time", end_time)
+      query.set("class_name", className)
+      query.set("phone",phone)
+      query.save().then(res => {
+        console.log(res + "上传成功");
+        const pointer = Bmob.Pointer('_User');
+        const poiID = pointer.set(currentUser.objectId);
+        console.log("id=" + currentUser.objectId);
+        var teacherId = res.objectId;
+        console.log("teacherId=" + teacherId);
+        query.get(teacherId).then(res => {
+          res.set('belong', poiID)
+          res.save()
+          console.log(res + "成功123")
+        })
+        app.showToast("发布成功", that, 1000);
+        setTimeout(function () {
+          wx.switchTab({
+            url: '../teacher_publish'
+          })
+        }, 800);
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   },
   closeLayer: function () {
     that.setData({
@@ -137,7 +145,7 @@ Page({
 
   },
   toModifyDiary: function (event) {
-  
+
   },
   modifyDiary: function (e) {
     var t = this;
@@ -182,10 +190,11 @@ Page({
 function getList(t, k) {
   that = t;
   const query = Bmob.Query('TeacherClass');
+  var list = [];
   query.find().then(res => {
     that.setData({
       diaryList: res
-    },function() {
+    }, function () {
     })
   });
 }

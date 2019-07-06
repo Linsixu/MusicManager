@@ -34,12 +34,14 @@
 }
 .diary_list button.modify{right:90px;}
 
-
+.weui-media-box__info{
+  float: center;
+  margin-top: 10rpx;
+}
 .weui-media-box__info__operate{
   float:right;
   color:#515151;
   padding-right:20rpx;
-
 }
 .weui-media-box__info__operate .del{
   margin-right: 15px;
@@ -95,7 +97,7 @@ form .weui-dialog__bd:first-child {
     padding-bottom: 10px;
 }
 .page_item{
-   display: flex;
+    display: flex;
     border-bottom: 3rpx solid rgba(0, 0, 0, 0.1);
     padding-bottom: 20rpx;
     padding-left: 20rpx;
@@ -105,15 +107,17 @@ form .weui-dialog__bd:first-child {
 .weui-media-box__title{
   font-size: 16px;
   color: #515151;
-  margin-top: 10rpx;
 }
 
 .weui-media-box__desc{
-  font-size: 16px;
-  color: #515151;
-  margin-top: 10rpx;
+  font-size: 14px;
+  color: #686565e8;
 }
 
+.weui-media-box__phone{
+  font-size: 14px;
+  color: #686565e8;
+}
 
 .searchbar-result{
   border:none;

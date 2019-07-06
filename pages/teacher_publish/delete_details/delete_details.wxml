@@ -1,0 +1,49 @@
+<import src="../../../style/footer.wxml" />
+<view class="weui-cells__title">修改信息</view>
+      <form bindsubmit="addClassMsg" report-submit="true">
+        <include src="../../../toast_foot.wxml"/>
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">课堂名称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="class_name" placeholder="请输入课堂名称" value='{{class_name}}'/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">手机号码</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="phone_number" placeholder="请输入手机号码" value='{{phone}}'/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input" bindtap='pickerShow'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label">开始时间</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="start_time" value='{{startTime}}'></input>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input" bindtap='pickerShow'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label">结束时间</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input"  name="end_time" value='{{endTime}}'></input>
+                </view>
+            </view>
+          </view>
+          <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
+  <button class="weui-btn" type="primary" formType="submit">更新</button>
+</view>
+ <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
+  <button class="weui-btn" type="warn">删除</button>
+</view>
+      </form>
+
+<timePicker pickerShow="{{isPickerShow}}" id="picker" wx:if="{{isPickerRender}}" bind:hidePicker="pickerHide" bind:setPickerTime="setPickerTime"
+  config="{{pickerConfig}}"></timePicker>
+

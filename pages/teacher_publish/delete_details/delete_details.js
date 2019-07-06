@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
-var Bmob = require('../../dist/Bmob-1.7.1.min.js');
-var common = require('../../utils/common.js');
+var Bmob = require('../../../dist/Bmob-1.7.1.min.js');
+var common = require('../../../utils/common.js');
 var app = getApp();
 var that;
 Page({
@@ -12,6 +12,10 @@ Page({
     windowWidth: 0,
     limit: 10,
     diaryList: [],
+    class_name: '',
+    teacher_name: '',
+    phone: '',
+    objectId: 0,
     modifyDiarys: false,
 
     //时间器
@@ -30,7 +34,7 @@ Page({
     }
   },
 
-  test: function(){
+  test: function () {
     app.showToast("请登陆", that, 1000);
   },
   /***时间选择器**/
@@ -77,9 +81,18 @@ Page({
 
   onReady: function (e) {
   },
-  onLoad: function () {
+
+  onLoad: function (options) {
+    that = this;
+    console.log("options=" + options);
     this.dialog = this.selectComponent(".mydialog");
-    getList(this);
+    objectId = options.objectId; 
+    this.setData({
+      startTime: options.start_time,
+      endTime: options.end_time,
+      class_name: options.class_name,
+      phone: options.phone,
+    });
   },
   noneWindows: function () {
     that.setData({
@@ -90,21 +103,21 @@ Page({
   onShow: function () {
     var currentUser = Bmob.User.current();
     console.log("teacher=" + currentUser.isteacher);
-    if(currentUser == null){
+    if (currentUser == null) {
       app.showToast("请登陆", that, 1000);
       setTimeout(function () {
         wx.switchTab({
           url: '../../pages/setting/setting'
         })
       }, 1000);
-    } else if (currentUser.isteacher == false){
+    } else if (currentUser.isteacher == false) {
       app.showToast("不是老师无法使用", that, 1000);
       setTimeout(function () {
         wx.switchTab({
           url: '../../pages/setting/setting'
         })
       }, 1000);
-    }else{
+    } else {
       getList(this);
     }
     // wx.getSystemInfo({
@@ -137,7 +150,7 @@ Page({
 
   },
   toModifyDiary: function (event) {
-  
+
   },
   modifyDiary: function (e) {
     var t = this;
@@ -182,10 +195,11 @@ Page({
 function getList(t, k) {
   that = t;
   const query = Bmob.Query('TeacherClass');
+  var list = [];
   query.find().then(res => {
     that.setData({
       diaryList: res
-    },function() {
+    }, function () {
     })
   });
 }
