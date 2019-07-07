@@ -17,6 +17,7 @@ Page({
     phone: '',
     objectId: 0,
     belong: [],
+    isTeacher: false,
     modifyDiarys: false,
 
     //时间器
@@ -44,12 +45,17 @@ Page({
 
   onLoad: function (options) {
     that = this;
+   //拿老师个人信息
     var currentUser = Bmob.User.current();
+    console.log(currentUser);
     if(currentUser == null){
-      wx.navigateTo({
-        url: '../../teacher_register/teacher_register'
-      })
+      that.isTeacher = false;
+    }else if(currentUser.isteacher == true){
+      that.isTeacher = true;
+    }else{
+      that.isTeacher = false;
     }
+
     this.dialog = this.selectComponent(".mydialog");
     that.objectId = options.objectId;
     that.belong = options.belong;
@@ -57,12 +63,14 @@ Page({
     that.startTime = options.start_time;
     that.endTime = options.end_time;
     that.className = options.class_name;
-    console.log("----------objectId----------", that.teacher_name);
+    console.log("----------objectId----------", that.isTeacher,typeof (that.isTeacher));
     this.setData({
       startTime: options.start_time,
       endTime: options.end_time,
       className: options.class_name,
       phone: options.phone,
+      teacher_name: that.teacher_name,
+      isTeacher: that.isTeacher,
     });
   },
 
@@ -88,7 +96,10 @@ Page({
   signInMsg: function (event) {
     that = this;
     var currentUser = Bmob.User.current();
-
+    var new_student_name = null;
+    if (currentUser.isteacher){
+      new_student_name = event.detail.value.student_name;
+    }
     const query = Bmob.Query('TeacherClass');
     query.get(that.objectId).then(res => {
       console.log(res)
@@ -102,24 +113,35 @@ Page({
       }else{
         //更新数据
         res.set('sign_in',true);
+        if (new_student_name != null){
+          res.set('student_name', new_student_name);
+        }else if(currentUser != null){
+          res.set('student_name', currentUser.self_name);
+        }
         //添加课程与学生关系
         const pointer = Bmob.Pointer('_User');
         const poiID = pointer.set(currentUser.objectId);
-        res.set('belong_student', poiID)
+        res.set('belong_student', poiID);
         
         //插入到学生签到数据库中
         const pointer1 = Bmob.Pointer('TeacherClass');
         const poiMsg = pointer1.set(that.objectId);
         const query1 = Bmob.Query('StudentSignIn');
-        console.log("teacher_name", that.endTime)
+        // console.log("teacher_name", that.endTime)
         query1.set("teacher_name", that.teacher_name);
         query1.set("start_time", that.startTime);
         query1.set("end_time", that.endTime);
         query1.set("class_name", that.className);
+        query1.set("userId", poiID);
         query1.set("belong", poiMsg);
         query1.save().then(res1 => {
-          console.log(res1)
-          res.save()
+          console.log("----res1-----",res1);
+          if(res1 != null){
+            const pointer2 = Bmob.Pointer('StudentSignIn');
+            const poiSignIn = pointer2.set(res1.objectId);
+            res.set('sign_in_msg', poiSignIn);
+          }
+          res.save();
           app.showToast("已成功预约", that, 1000);
           setTimeout(function () {
             wx.navigateBack({
@@ -150,32 +172,16 @@ Page({
   },
   onShow: function () {
     var currentUser = Bmob.User.current();
-    console.log("teacher=" + currentUser.isteacher);
     if (currentUser == null) {
       app.showToast("请登陆", that, 1000);
       setTimeout(function () {
         wx.switchTab({
-          url: '../../pages/setting/setting'
-        })
-      }, 1000);
-    } else if (currentUser.isteacher == false) {
-      app.showToast("不是老师无法使用", that, 1000);
-      setTimeout(function () {
-        wx.switchTab({
-          url: '../../pages/setting/setting'
+          url: '../../setting/setting'
         })
       }, 1000);
     } else {
       getList(this);
     }
-    // wx.getSystemInfo({
-    //   success: (res) => {
-    //     that.setData({
-    //       windowHeight: res.windowHeight,
-    //       windowWidth: res.windowWidth
-    //     })
-    //   }
-    // })
   },
   pullUpLoad: function (e) {
     var limit = that.data.limit + 2

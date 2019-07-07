@@ -1,57 +1,178 @@
 //index.js
 //获取应用实例
-const app = getApp()
-
+var Bmob = require('../../dist/Bmob-1.7.1.min.js');
+var common = require('../../utils/common.js');
+var app = getApp();
+var that;
 Page({
+
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    loading: false,
+    windowHeight: 0,
+    windowWidth: 0,
+    limit: 10,
+    diaryList: [],
+    modifyDiarys: false,
 
-  
-  },
-
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
-  onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
+    //时间器
+    isPickerRender: false,
+    isPickerShow: false,
+    startTime: "",
+    endTime: "",
+    pickerConfig: {
+      endDate: true,
+      column: "minute",
+      dateLimit: true,
+      initStartTime: "2019-01-01 12:32:44",
+      initEndTime: "2019-12-01 12:32:44",
+      limitStartTime: "2015-05-06 12:32:44",
+      limitEndTime: "2055-05-06 12:32:44"
     }
   },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
+
+  test: function () {
+    app.showToast("请登陆", that, 1000);
+  },
+  /***时间选择器**/
+  pickerShow: function () {
+    console.log("123")
     this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      isPickerShow: true,
+      isPickerRender: true,
+      chartHide: true
+    });
+  },
+  pickerHide: function () {
+    this.setData({
+      isPickerShow: false,
+      chartHide: false
+    });
+  },
+
+  bindPickerChange: function (e) {
+    console.log("3333")
+    console.log("picker发送选择改变，携带值为", e.detail.value);
+    console.log(this.data.sensorList);
+
+    this.getData(this.data.sensorList[e.detail.value].id);
+    // let startDate = util.formatTime(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 7));
+    // let endDate = util.formatTime(new Date());
+    this.setData({
+      index: e.detail.value,
+      sensorId: this.data.sensorList[e.detail.value].id
+      // startDate,
+      // endDate
+    });
+  },
+  setPickerTime: function (val) {
+    console.log("setPickerTime")
+    console.log(val);
+    let data = val.detail;
+    this.setData({
+      startTime: data.startTime,
+      endTime: data.endTime
+    });
+  },
+  /**时间选择器***/
+
+  onReady: function (e) {
+  },
+  onLoad: function () {
+    var currentUser = Bmob.User.current();
+    if (currentUser == null) {
+      app.showToast("请登陆", that, 1000);
+    }
+    this.dialog = this.selectComponent(".mydialog");
+  },
+  noneWindows: function () {
+    that.setData({
+      writeDiary: "",
+      modifyDiarys: ""
     })
-  }
+  },
+  onShow: function () {
+    var currentUser = Bmob.User.current();
+    if (currentUser != null) {
+      getList(this);
+    }
+  },
+  pullUpLoad: function (e) {
+    var limit = that.data.limit + 2
+    this.setData({
+      limit: limit
+    })
+    this.onShow()
+  },
+  toAddDiary: function () {
+    wx.navigateTo({
+      url: 'publish_details/publish_details'
+    })
+  },
+  closeLayer: function () {
+    that.setData({
+      writeDiary: false
+    })
+  },
+  deleteDiary: function (event) {
+
+  },
+  toModifyDiary: function (event) {
+
+  },
+  modifyDiary: function (e) {
+    var t = this;
+    modify(t, e)
+  },
+  showInput: function () {
+    this.setData({
+      inputShowed: true
+    });
+  },
+  hideInput: function () {
+    this.setData({
+      inputVal: "",
+      inputShowed: false
+    });
+    getList(this);
+  },
+  clearInput: function () {
+    this.setData({
+      inputVal: ""
+    });
+    getList(this);
+  },
+  inputTyping: function (e) {
+    //搜索数据
+    getList(this, e.detail.value);
+    this.setData({
+      inputVal: e.detail.value
+    });
+  },
+  closeAddLayer: function () {
+    that.setData({
+      modifyDiarys: false
+    })
+  },
 })
+
+
+/*
+* 获取数据
+*/
+function getList(t, k) {
+  that = t;
+  var currentUser = Bmob.User.current();
+  const pointer = Bmob.Pointer('_User');
+  const poiID = pointer.set(currentUser.objectId);
+
+  const query = Bmob.Query('StudentSignIn');
+  //userId 字段名称关联用户表 ，类型Pointer
+  query.equalTo("userId", "==", poiID);
+  query.find().then(res => {
+    console.log("----成功加载个人用户预定信息----",res);
+    that.setData({
+      diaryList: res
+    }, function () {
+    })
+  })
+}

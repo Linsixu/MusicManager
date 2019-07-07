@@ -178,6 +178,21 @@ Page({
       res.set('start_time', start_time);
       res.set('end_time', end_time);
       res.set('sign_in', finally_sign_in);
+      //删除关联到学生预定表
+      if (!finally_sign_in){
+        res.unset("belong_student");
+        var signInMsgId = res.sign_in_msg.objectId;
+        if (signInMsgId != null){
+          res.unset("sign_in_msg");
+          //删除学生预定表某个信息
+          const query3 = Bmob.Query('StudentSignIn');
+          query3.destroy(signInMsgId).then(res2 => {
+            console.log("-----成功删除预定信息表内容",res2)
+          }).catch(err2 => {
+            console.log(err2)
+          })
+        }
+      }
       res.save();
       app.showToast("更新成功", that, 1000);
       setTimeout(function () {

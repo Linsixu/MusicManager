@@ -19,6 +19,22 @@
                     <input class="weui-input" name="phone_number" placeholder="请输入手机号码" value='{{phone}}' disabled='disabled'/>
                 </view>
             </view>
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">教师昵称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="phone_number" placeholder="教师昵称" value='{{teacher_name}}' disabled='disabled'/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input weui-cell_vcode"  wx:if="{{isTeacher == true}}">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">学生名称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="student_name" placeholder="您课程学生的名字"/>
+                </view>
+            </view>
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
                     <view class="weui-label">开始时间</view>

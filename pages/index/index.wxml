@@ -1,4 +1,40 @@
-<!--index.wxml-->
-<view class="container">
-  
+<import src="../../style/footer.wxml" />
+<view class="page">
+  <include src="../../toast_foot.wxml"/>
+  <scroll-view lower-threshold="800" bindscrolltolower="pullUpLoad" upper-threshold="0" scroll-y="true">
+    <view class="page__bd">
+      <view class="weui-panel">
+        <view class="weui-panel__bd">
+<block wx:if="{{diaryList.length>0}}">
+          <navigator class="weui-media-box weui-media-box_text" wx:for="{{diaryList}}" url="../teacher_sign_in/teacher_sign_in?objectId={{item.objectId}}&phone={{item.phone}}&start_time={{item.start_time}}&end_time={{item.end_time}}&class_name={{item.class_name}}&teacher_name={{item.teacher_name}}&belong={{item.belong.objectId}}&sign_in={{sign_in}}">
+          <view class='page_item'>
+            <view class="weui-media-box__title">教师昵称：{{item.teacher_name}}</view>
+            <view class="weui-media-box__desc">
+              课堂名称：{{item.class_name}}</view>
+            <view class="weui-media-box__sign_in">
+              <text>签到情况：已经签到</text>
+            </view>
+            <view class="weui-media-box__info">
+              <view class="weui-media-box__info__meta weui-media-time">开始时间：{{item.start_time}}</view>
+              <view class="weui-media-box__info__meta weui-media-time">结束时间：{{item.end_time}}</view>
+            </view>
+          </view>
+          </navigator>
+</block>
+<block wx:else>
+           <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text">
+             暂无个人课程信息</view>
+            <view class="weui-media-box__desc"></view>
+
+          </view>
+</block>
+
+        </view>
+      </view>
+    </view>
+  </scroll-view>
 </view>
+
+<timePicker pickerShow="{{isPickerShow}}" id="picker" wx:if="{{isPickerRender}}" bind:hidePicker="pickerHide" bind:setPickerTime="setPickerTime"
+  config="{{pickerConfig}}"></timePicker>

@@ -15,7 +15,7 @@
               课堂名称：{{item.class_name}}</view>
             <view class="weui-media-box__phone">手机号码：{{item.phone}}</view>
             <view class="weui-media-box__sign_in">
-              <text wx:if="{{item.sign_in == true}}">签到情况：已经签到</text>
+              <text wx:if="{{item.sign_in == true}}">签到情况：已经签到({{item.student_name}})</text>
               <text wx:else>签到情况：未签到</text>
             </view>
             <view class="weui-media-box__info">
