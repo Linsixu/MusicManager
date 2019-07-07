@@ -77,7 +77,9 @@ Page({
     that.className = options.className;
     that.teacherName = options.teacherName;
     that.studentName = options.studentName;
-
+    this.setData({
+      tableName: that.tableName,
+    });
     if(that.tableName == 'TeacherClass'){
        getTeacherClassList(this);
     }else{
