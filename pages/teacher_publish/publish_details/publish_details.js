@@ -30,6 +30,7 @@ Page({
   },
   /***时间选择器**/
   pickerShow: function () {
+    wx.hideKeyboard();
     console.log("123")
     this.setData({
       isPickerShow: true,

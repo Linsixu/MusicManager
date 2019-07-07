@@ -85,7 +85,7 @@ Page({
       success: function (res) {
         console.log(res);
         if (res.confirm) {
-          that.signInMsg(this);
+          that.signInMsg(event);
         } else {
           console.log('用户点击辅助操作')
         }
@@ -99,6 +99,7 @@ Page({
     var new_student_name = null;
     if (currentUser.isteacher){
       new_student_name = event.detail.value.student_name;
+      console.log("----student_name----", new_student_name);
     }
     const query = Bmob.Query('TeacherClass');
     query.get(that.objectId).then(res => {
