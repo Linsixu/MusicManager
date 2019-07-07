@@ -156,19 +156,24 @@ function getTeacherClassList(t, k) {
   that = t;
   const query = Bmob.Query('TeacherClass');
   if(that.className != '' && that.className != null){
-    query.equalTo("classname", "==", that.className);
+    query.equalTo("class_name", "==", that.className);
+    console.log("----className-----", that.className);
   }
   if(that.teacherName != '' && that.teacherName != null){
     query.equalTo("teacher_name", "==", that.teacherName);
+    console.log("----teacher_name-----", that.teacherName);
   }
   if (that.studentName != '' && that.studentName != null) {
     query.equalTo("student_name", "==", that.studentName);
+    console.log("----student_name-----", that.studentName);
   }
   if (that.startTime != '' && that.startTime != null) {
     query.equalTo("start_time", ">=", that.startTime);
+    console.log("----start_time-----", that.startTime);
   }
   if (that.endTime != '' && that.endTime != null) {
     query.equalTo("end_time", "<=", that.endTime);
+    console.log("----end_time-----", that.endTime);
   }
   query.find().then(res => {
     console.log(res)
