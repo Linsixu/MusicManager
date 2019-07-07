@@ -1,5 +1,6 @@
 var app = getApp();
 var Bmob = require('../../dist/Bmob-1.7.1.min.js');
+var that;
 Page({
   data: {
     userInfo: {},
@@ -14,8 +15,8 @@ Page({
       { text: '教师注册账号', url: '../teacher_register/teacher_register', icon: '../../images/setting_teacher.png', tips: '' },
       { text: '家长注册账号', url: '../register/register', icon: '../../images/setting_parent.png', tips: '' },
       { text: '教师发布流程', url: '../teacher_publish/teacher_publish', icon: '../../images/setting_teacher_publish.png', tips: '' },
-      { text: '课程搜索', url: '../register/register', icon: '../../images/setting_search.png', tips: '' },
-      { text: '学生课程签到', url: '../student/student_sign_in/student_sign_in', icon: '../../images/student_check_in.png', tips: '' }
+      { text: '教师课程搜索', url: '../search/teacher_search/teacher_search', icon: '../../images/setting_search.png', tips: '' },
+      { text: '学生课程搜索', url: '../search/sign_in_search/sign_in_search', icon: '../../images/student_check_in.png', tips: '' }
     ]
   },
 
@@ -24,6 +25,32 @@ Page({
     that.setData({
       avatar: '../../images/setting_user_avatar.png'
     })
+  },
+
+  loginOut: function () {
+    that = this;
+    let currentUser = Bmob.User.current();
+    if (currentUser == null){
+      app.showToast("请登陆", this, 1000);
+      return;
+    }
+    wx.showModal({
+      title: '退出提示',
+      content: '退出登录将清除所有个人消息，是否退出',
+      confirmText: "确定",
+      cancelText: "取消",
+      success: function (res) {
+        if (res.confirm) {
+          Bmob.User.logout();
+          that.setData({
+            name: '未登录',
+            childname: '',
+          })
+        } else {
+          console.log('用户点击辅助操作')
+        }
+      }
+    });
   },
 
   jumpToLogin: function(){

@@ -12,7 +12,7 @@
             <view class="weui-media-box__desc">
               课堂名称：{{item.class_name}}</view>
             <view class="weui-media-box__sign_in">
-              <text>签到情况：已经签到</text>
+              <text>签到情况：已经签到（我）</text>
             </view>
             <view class="weui-media-box__info">
               <view class="weui-media-box__info__meta weui-media-time">开始时间：{{item.start_time}}</view>

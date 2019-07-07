@@ -135,6 +135,7 @@ Page({
         query1.set("class_name", that.className);
         query1.set("userId", poiID);
         query1.set("belong", poiMsg);
+        query1.set("student_name", currentUser.self_name);
         query1.save().then(res1 => {
           console.log("----res1-----",res1);
           if(res1 != null){

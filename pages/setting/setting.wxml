@@ -1,4 +1,5 @@
 <view class="list-wrapper">
+<include src="../../toast_foot.wxml"/>
     <view class='user'>
       <image class='user-avatar' src="{{avatar}}"></image>
     </view>
@@ -16,4 +17,11 @@
         <view class="div-line"></view>
       </navigator>
     </block>
+    <view class="div-line"></view>
+     <view class='item' bindtap='loginOut'>
+          <image class='item-image' src="../../images/login_out.png"></image>
+          <text class="item-text">退出登录</text>
+          <text class='item-array'>></text>
+      </view>
+    <view class="div-line"></view>
   </view>

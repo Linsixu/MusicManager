@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
-var Bmob = require('../../dist/Bmob-1.7.1.min.js');
-var common = require('../../utils/common.js');
+var Bmob = require('../../../dist/Bmob-1.7.1.min.js');
+var common = require('../../../utils/common.js');
 var app = getApp();
 var that;
 Page({
@@ -11,7 +11,6 @@ Page({
     windowHeight: 0,
     windowWidth: 0,
     limit: 10,
-    diaryList: [],
     modifyDiarys: false,
 
     //时间器
@@ -29,12 +28,9 @@ Page({
       limitEndTime: "2055-05-06 12:32:44"
     }
   },
-
-  test: function () {
-    app.showToast("请登陆", that, 1000);
-  },
   /***时间选择器**/
   pickerShow: function () {
+    wx.hideKeyboard();
     console.log("123")
     this.setData({
       isPickerShow: true,
@@ -43,6 +39,7 @@ Page({
     });
   },
   pickerHide: function () {
+    console.log("333")
     this.setData({
       isPickerShow: false,
       chartHide: false
@@ -78,34 +75,18 @@ Page({
   onReady: function (e) {
   },
   onLoad: function () {
-    var currentUser = Bmob.User.current();
-    if (currentUser == null) {
-      app.showToast("请登陆", this, 1000);
-    }
     this.dialog = this.selectComponent(".mydialog");
   },
-  noneWindows: function () {
-    that.setData({
-      writeDiary: "",
-      modifyDiarys: ""
-    })
-  },
-  onShow: function () {
-    var currentUser = Bmob.User.current();
-    if (currentUser != null) {
-      getList(this);
-    }
-  },
-  pullUpLoad: function (e) {
-    var limit = that.data.limit + 2
-    this.setData({
-      limit: limit
-    })
-    this.onShow()
-  },
-  toAddDiary: function () {
+  jumpToSearch: function (event) {
+    that = this;
+    console.log("event=" + event.value);
+    var className = event.detail.value.class_name;
+    var start_time = event.detail.value.start_time;
+    var end_time = event.detail.value.end_time;
+    var teacher_name = event.detail.value.teacher_name;
+
     wx.navigateTo({
-      url: 'publish_details/publish_details'
+      url: '../teacher_search_details/teacher_search_details?className=' + className + '&teacherName=' + teacher_name + '&start_time=' + start_time+'&end_time='+end_time+'&tableName=TeacherClass',
     })
   },
   closeLayer: function () {
@@ -161,18 +142,12 @@ Page({
 */
 function getList(t, k) {
   that = t;
-  var currentUser = Bmob.User.current();
-  const pointer = Bmob.Pointer('_User');
-  const poiID = pointer.set(currentUser.objectId);
-
-  const query = Bmob.Query('StudentSignIn');
-  //userId 字段名称关联用户表 ，类型Pointer
-  query.equalTo("userId", "==", poiID);
+  const query = Bmob.Query('TeacherClass');
+  var list = [];
   query.find().then(res => {
-    console.log("----成功加载个人用户预定信息----",res);
     that.setData({
       diaryList: res
     }, function () {
     })
-  })
+  });
 }

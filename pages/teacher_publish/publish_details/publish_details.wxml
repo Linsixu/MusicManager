@@ -39,7 +39,7 @@
           <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
   <button class="weui-btn" type="primary" formType="submit">发布</button>
 </view>
-      </form>
+</form>
 
 <timePicker pickerShow="{{isPickerShow}}" id="picker" wx:if="{{isPickerRender}}" bind:hidePicker="pickerHide" bind:setPickerTime="setPickerTime"
   config="{{pickerConfig}}"></timePicker>

@@ -1,0 +1,46 @@
+<import src="../../../style/footer.wxml" />
+<view class="weui-cells__title">请输入搜索信息</view>
+      <form bindsubmit="jumpToSearch" report-submit="true">
+        <include src="../../../toast_foot.wxml"/>
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">课堂名称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="class_name" placeholder="请输入课堂名称"/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">教师昵称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="teacher_name" placeholder="不输入教师昵称将搜索全部教师" />
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input" bindtap='pickerShow'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label">开始时间</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="start_time" value='{{startTime}}'></input>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input" bindtap='pickerShow'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label">结束时间</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input"  name="end_time" value='{{endTime}}'></input>
+                </view>
+            </view>
+          </view>
+          <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
+  <button class="weui-btn" type="primary" formType="submit">搜索</button>
+</view>
+</form>
+
+<timePicker pickerShow="{{isPickerShow}}" id="picker" wx:if="{{isPickerRender}}" bind:hidePicker="pickerHide" bind:setPickerTime="setPickerTime"
+  config="{{pickerConfig}}"></timePicker>
+

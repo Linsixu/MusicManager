@@ -11,7 +11,10 @@
     "pages/teacher_publish/delete_details/delete_details",
     "pages/student/student_sign_in/student_sign_in",
     "pages/feeds/teacher_feed/teacher_feed",
-    "pages/feeds/teacher_sign_in/teacher_sign_in"
+    "pages/feeds/teacher_sign_in/teacher_sign_in",
+    "pages/search/sign_in_search/sign_in_search",
+    "pages/search/teacher_search/teacher_search",
+    "pages/search/teacher_search_details/teacher_search_details"
   ],
   "window": {
     "backgroundTextStyle": "light",

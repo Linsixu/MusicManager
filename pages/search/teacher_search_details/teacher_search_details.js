@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
-var Bmob = require('../../dist/Bmob-1.7.1.min.js');
-var common = require('../../utils/common.js');
+var Bmob = require('../../../dist/Bmob-1.7.1.min.js');
+var common = require('../../../utils/common.js');
 var app = getApp();
 var that;
 Page({
@@ -19,6 +19,10 @@ Page({
     isPickerShow: false,
     startTime: "",
     endTime: "",
+    className:"",
+    teacherName:"",
+    studentName:"",
+    tableName:"",
     pickerConfig: {
       endDate: true,
       column: "minute",
@@ -32,21 +36,6 @@ Page({
 
   test: function () {
     app.showToast("请登陆", that, 1000);
-  },
-  /***时间选择器**/
-  pickerShow: function () {
-    console.log("123")
-    this.setData({
-      isPickerShow: true,
-      isPickerRender: true,
-      chartHide: true
-    });
-  },
-  pickerHide: function () {
-    this.setData({
-      isPickerShow: false,
-      chartHide: false
-    });
   },
 
   bindPickerChange: function (e) {
@@ -77,12 +66,23 @@ Page({
 
   onReady: function (e) {
   },
-  onLoad: function () {
-    var currentUser = Bmob.User.current();
-    if (currentUser == null) {
-      app.showToast("请登陆", this, 1000);
-    }
+  onLoad: function (options) {
+    that = this;
     this.dialog = this.selectComponent(".mydialog");
+    console.log('-----event-----',options);
+    that.tableName = options.tableName;
+    //教师or学生搜索
+    that.startTime = options.start_time;
+    that.endTime = options.end_time;
+    that.className = options.className;
+    that.teacherName = options.teacherName;
+    that.studentName = options.studentName;
+
+    if(that.tableName == 'TeacherClass'){
+       getTeacherClassList(this);
+    }else{
+      getSignInClassList(this);
+    }
   },
   noneWindows: function () {
     that.setData({
@@ -91,10 +91,6 @@ Page({
     })
   },
   onShow: function () {
-    var currentUser = Bmob.User.current();
-    if (currentUser != null) {
-      getList(this);
-    }
   },
   pullUpLoad: function (e) {
     var limit = that.data.limit + 2
@@ -133,17 +129,14 @@ Page({
       inputVal: "",
       inputShowed: false
     });
-    getList(this);
   },
   clearInput: function () {
     this.setData({
       inputVal: ""
     });
-    getList(this);
   },
   inputTyping: function (e) {
     //搜索数据
-    getList(this, e.detail.value);
     this.setData({
       inputVal: e.detail.value
     });
@@ -159,20 +152,56 @@ Page({
 /*
 * 获取数据
 */
-function getList(t, k) {
+function getTeacherClassList(t, k) {
   that = t;
-  var currentUser = Bmob.User.current();
-  const pointer = Bmob.Pointer('_User');
-  const poiID = pointer.set(currentUser.objectId);
-
-  const query = Bmob.Query('StudentSignIn');
-  //userId 字段名称关联用户表 ，类型Pointer
-  query.equalTo("userId", "==", poiID);
+  const query = Bmob.Query('TeacherClass');
+  if(that.className != '' && that.className != null){
+    query.equalTo("classname", "==", that.className);
+  }
+  if(that.teacherName != '' && that.teacherName != null){
+    query.equalTo("teacher_name", "==", that.teacherName);
+  }
+  if (that.studentName != '' && that.studentName != null) {
+    query.equalTo("student_name", "==", that.studentName);
+  }
+  if (that.startTime != '' && that.startTime != null) {
+    query.equalTo("start_time", ">=", that.startTime);
+  }
+  if (that.endTime != '' && that.endTime != null) {
+    query.equalTo("end_time", "<=", that.endTime);
+  }
   query.find().then(res => {
-    console.log("----成功加载个人用户预定信息----",res);
+    console.log(res)
     that.setData({
       diaryList: res
     }, function () {
     })
-  })
+  });
+}
+
+function getSignInClassList(t, k) {
+  that = t;
+  const query = Bmob.Query('StudentSignIn');
+  if (that.className != '' && that.className != null) {
+    query.equalTo("class_name", "==", that.className);
+  }
+  if (that.teacherName != '' && that.teacherName != null) {
+    query.equalTo("teacher_name", "==", that.teacherName);
+  }
+  if (that.studentName != '' && that.studentName != null) {
+    query.equalTo("student_name", "==", that.studentName);
+  }
+  if (that.startTime != '' && that.startTime != null) {
+    query.equalTo("start_time", ">=", that.startTime);
+  }
+  if (that.endTime != '' && that.endTime != null) {
+    query.equalTo("end_time", "<=", that.endTime);
+  }
+  query.find().then(res => {
+    console.log(res)
+    that.setData({
+      diaryList: res
+    }, function () {
+    })
+  });
 }
