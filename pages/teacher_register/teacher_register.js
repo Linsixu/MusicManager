@@ -38,7 +38,7 @@ Page({
       return
     }
 
-    if (childName == '') {
+    if (teahcer_name == '') {
       app.showToast("请填写教师名称", that, 1000);
       return
     }
