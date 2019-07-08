@@ -18,6 +18,7 @@ Page({
     var psd = e.detail.value.password;
     var againtpsd = e.detail.value.password1;
     var teahcer_name = e.detail.value.teahcer_name;
+    var invite_number = e.detail.value.invite_number;
 
     var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
     if (!myreg.test(name)) {
@@ -40,6 +41,16 @@ Page({
 
     if (teahcer_name == '') {
       app.showToast("请填写教师名称", that, 1000);
+      return
+    }
+
+    if (invite_number == '' || invite_number == null){
+      app.showToast("请输入邀请码", that, 1000);
+      return
+    }
+
+    if (invite_number != 1155665) {
+      app.showToast("请输入正确的邀请码", that, 1000);
       return
     }
 

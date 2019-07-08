@@ -20,6 +20,10 @@
       <text>教师名称:</text>
       <input placeholder='请输入教师名称' name="teahcer_name"/>
     </view>
+    <view class='section'>
+      <text>邀请码:</text>
+      <input type='number' placeholder='请输入成为教师邀请码' name="invite_number"/>
+    </view>
     <view class='button'>
       <button type='primary' form-type='submit'>注册</button>
     </view>
