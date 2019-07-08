@@ -167,7 +167,9 @@ function getList(t, k) {
 
   const query = Bmob.Query('StudentSignIn');
   //userId 字段名称关联用户表 ，类型Pointer
-  query.equalTo("userId", "==", poiID);
+  const query1 = query.equalTo("userId", "==", poiID);
+  const query2 = query.equalTo("student_name", '==', currentUser.self_name);
+  query.or(query1, query2);
   query.find().then(res => {
     console.log("----成功加载个人用户预定信息----",res);
     that.setData({

@@ -49,6 +49,7 @@ Page({
       childname: childName,
       phone: name,
       isteacher: false,
+      self_name:childName,
     }
     if (psd != againtpsd){
       app.showToast("两次输入密码不同",that,1000);
