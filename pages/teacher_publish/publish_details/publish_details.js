@@ -18,6 +18,7 @@ Page({
     isPickerShow: false,
     startTime: "",
     endTime: "",
+    accounts: ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"],
     pickerConfig: {
       endDate: true,
       column: "minute",
@@ -84,6 +85,7 @@ Page({
     var start_time = event.detail.value.start_time;
     var end_time = event.detail.value.end_time;
     var phone = event.detail.value.phone_number;
+    var weekend = event.detail.value.weekend;
     console.log("event", event)
     console.log("start_time=" + start_time)
     console.log("end_time=" + end_time)
@@ -95,6 +97,8 @@ Page({
     }
     else if (start_time == '' || start_time == null || end_time == '' || end_time == null) {
       app.showToast("开始与结束时间不能为空", that, 1000);
+    } else if (weekend == '' || weekend == null) {
+      app.showToast("星期不能为空", that, 1000);
     } 
     else {
       that.setData({
@@ -114,6 +118,7 @@ Page({
       query.set("end_time", end_time)
       query.set("class_name", className)
       query.set("phone",phone)
+      query.set("weekend", weekend)
       query.save().then(res => {
         console.log(res + "上传成功");
         const pointer = Bmob.Pointer('_User');
@@ -137,6 +142,15 @@ Page({
       })
     }
   },
+
+  bindAccountChange: function (e) {
+    console.log('picker account 发生选择改变，携带值为', e.detail.value);
+
+    this.setData({
+      accountIndex: e.detail.value
+    })
+  },
+
   closeLayer: function () {
     that.setData({
       writeDiary: false

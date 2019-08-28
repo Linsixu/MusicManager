@@ -14,6 +14,7 @@ Page({
     diaryList: [],
     className: '',
     teacher_name: '',
+    weekend: '',
     phone: '',
     objectId: 0,
     belong: [],
@@ -63,6 +64,7 @@ Page({
     that.startTime = options.start_time;
     that.endTime = options.end_time;
     that.className = options.class_name;
+    that.weekend = options.weekend;
     console.log("----------objectId----------", that.isTeacher,typeof (that.isTeacher));
     this.setData({
       startTime: options.start_time,
@@ -71,6 +73,7 @@ Page({
       phone: options.phone,
       teacher_name: that.teacher_name,
       isTeacher: that.isTeacher,
+      weekend: that.weekend,
     });
   },
 
@@ -136,6 +139,7 @@ Page({
         query1.set("userId", poiID);
         query1.set("belong", poiMsg);
         query1.set("student_name", currentUser.self_name);
+        query1.set("weekend", that.weekend)
         query1.save().then(res1 => {
           console.log("----res1-----",res1);
           if(res1 != null){

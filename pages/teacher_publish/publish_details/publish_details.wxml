@@ -35,6 +35,23 @@
                     <input class="weui-input"  name="end_time" value='{{endTime}}'></input>
                 </view>
             </view>
+            <view class="weui-cell weui-cell_input" bindtap='pickerShow'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label">结束时间</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input"  name="end_time" value='{{endTime}}'></input>
+                </view>
+            </view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_select">
+                      <view class="weui-cell__bd">
+                        <picker bindchange="bindAccountChange" name="weekend" value="{{accounts[accountIndex]}}" range="{{accounts}}">
+                      <view class="weui-select">当前星期:{{accounts[accountIndex]}}</view>
+                      </picker>
+                </view>
+            </view>
+            </view>
           </view>
           <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
   <button class="weui-btn" type="primary" formType="submit">发布</button>

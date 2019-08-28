@@ -51,7 +51,16 @@
                     <input class="weui-input"  name="end_time" value='{{endTime}}' disabled='disabled'></input>
                 </view>
             </view>
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">课程星期</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input"  name="weekend" value='{{weekend}}' disabled='disabled'></input>
+                </view>
+            </view>
           </view>
+          
           <view class="page__bd page__bd_spacing" style='margin:20rpx;'>
   <button class="weui-btn" type="primary" formType="submit">预约</button>
 </view>
